@@ -3,6 +3,9 @@ import "./globals.css";
 import NavBar from "@/components/navbar";
 
 import { ClerkProvider } from "@clerk/nextjs";
+import { Suspense } from "react";
+import Loading from "./loading";
+
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export const metadata = {
@@ -15,8 +18,9 @@ export default function RootLayout({ children }) {
     <ClerkProvider>
       <html lang="en">
         <body className={`${plusJakartaSans.className}`}>
-          <NavBar />
-          {children}
+          <Suspense fallback={<Loading />}> <NavBar />
+            {children}</Suspense>
+
         </body>
       </html>
     </ClerkProvider>

@@ -2,7 +2,7 @@
 
 
 import React from 'react';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import hero from '../public/hero.png';
 
 const HeroSection = () => {
@@ -12,7 +12,7 @@ const HeroSection = () => {
 
             {/* Mobile View */}
 
-            <div className=" flex flex-col items-center justify-between w-full h-full bg-transparent md:hidden">
+            <div className=" flex flex-col items-center justify-between w-full h-full bg-transparent lg:hidden">
                 <div className="flex-1 flex justify-end mb-5">
                     <div className='grayscale'>
                         <Image src={hero} alt="Hero" layout='intrinsic' width={600} height={500} />
@@ -37,7 +37,7 @@ const HeroSection = () => {
 
             {/* Xl View */}
 
-            <div className=' items-center w-full bg-transparent hidden md:flex justify-center'>
+            <div className=' items-center w-full bg-transparent hidden lg:flex justify-center'>
 
                 <div className="flex-1 text-center pl-8 ">
                     <h1 className="text-5xl font-bold bg-gradient-to-r from-red-500 to-purple-500 text-transparent bg-clip-text inline-block">Find Job that suits you!</h1>
