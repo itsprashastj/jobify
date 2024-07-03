@@ -1,6 +1,5 @@
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import NavBar from "@/components/navbar";
 
 import { ClerkProvider } from "@clerk/nextjs";
 import { Suspense } from "react";
@@ -18,7 +17,7 @@ export default function RootLayout({ children }) {
     <ClerkProvider>
       <html lang="en">
         <body className={`${plusJakartaSans.className}`}>
-          <Suspense fallback={<Loading />}> <NavBar />
+          <Suspense fallback={<Loading />}>
             {children}</Suspense>
 
         </body>

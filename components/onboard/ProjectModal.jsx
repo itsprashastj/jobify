@@ -18,7 +18,7 @@ const ProjectModal = ({
 
     // Check if the name is "link" and update the value accordingly
     const correctedValue =
-      name === "link" && !/^https?:\/\//i.test(value)
+      name === "link" && value && !/^https?:\/\//i.test(value)
         ? `https://${value}`
         : value;
 
@@ -53,7 +53,7 @@ const ProjectModal = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg w-full max-w-md">
+      <div className="bg-white p-6 rounded-lg overflow-auto max-h-[500px] w-full max-w-md">
         <h3 className="text-lg font-semibold mb-4">
           {isEdit ? "Edit Project" : "Add Project"}
         </h3>
@@ -84,11 +84,12 @@ const ProjectModal = ({
               id="link"
               name="link"
               type="url"
-              value={newProject.link}
+              value={newProject.link || ""}
               onChange={handleInputChange}
               placeholder="Project Link"
             />
           </div>
+
           <div className="grid gap-2">
             <Label htmlFor="image">Project Image</Label>
             <Input

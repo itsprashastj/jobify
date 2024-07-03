@@ -4,6 +4,7 @@ import { SignedOut, SignedIn, SignInButton, UserButton } from '@clerk/nextjs';
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
+import { Button } from './ui/button';
 
 const NavBar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,7 +16,7 @@ const NavBar = () => {
     const menuItems = [
         {
             label: 'Home',
-            path: '/',
+            path: '/portal/dashboard',
             show: true
         },
         {
@@ -55,14 +56,14 @@ const NavBar = () => {
                                     menuItem.show ? (
                                         menuItem.label === 'Join Now' ? (
                                             <li key={index}>
-                                                <button className="px-4 py-2  text-white bg-black rounded-full w-fit">
+                                                <Button variant="outline" className="px-4 py-2 text-black rounded-full w-fit">
                                                     <SignedOut>
                                                         <Link href={menuItem.path}>{menuItem.label}</Link>
                                                     </SignedOut>
                                                     <SignedIn>
-                                                        <UserButton />
+                                                        <UserButton showName />
                                                     </SignedIn>
-                                                </button>
+                                                </Button>
                                             </li>
                                         ) : (
                                             <li key={index}>
@@ -105,14 +106,14 @@ const NavBar = () => {
                                     menuItem.show ? (
                                         menuItem.label === 'Join Now' ? (
                                             <li key={index}>
-                                                <button className="px-4 py-2  text-white bg-black rounded-full w-fit">
+                                                <Button variant='outline' className="px-4 py-2  text-black rounded-full w-fit">
                                                     <SignedOut>
                                                         <Link href={menuItem.path} onClick={toggleMenu}>{menuItem.label}</Link>
                                                     </SignedOut>
                                                     <SignedIn>
-                                                        <UserButton />
+                                                        <UserButton showName />
                                                     </SignedIn>
-                                                </button>
+                                                </Button>
                                             </li>
                                         ) : (
                                             <li key={index}>
