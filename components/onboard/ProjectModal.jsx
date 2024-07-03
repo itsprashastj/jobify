@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const ProjectModal = ({
   newProject,
@@ -11,18 +11,35 @@ const ProjectModal = ({
   setShowProjectModal,
   isEdit,
 }) => {
+  const [imagePreview, setImagePreview] = useState(null);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewProject((prev) => ({ ...prev, [name]: value }));
+
+    // Check if the name is "link" and update the value accordingly
+    const correctedValue =
+      name === "link" && !/^https?:\/\//i.test(value)
+        ? `https://${value}`
+        : value;
+
+    setNewProject((prev) => ({ ...prev, [name]: correctedValue }));
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setNewProject((prev) => ({ ...prev, image: file }));
+    if (file && (file.type === "image/png" || file.type === "image/jpeg")) {
+      setNewProject((prev) => ({ ...prev, image: file }));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      alert("Please upload an image file (PNG or JPG)");
+    }
   };
 
   useEffect(() => {
-    // Clear form when the modal is closed
     if (!isEdit) {
       setNewProject({
         title: "",
@@ -30,6 +47,7 @@ const ProjectModal = ({
         link: "",
         image: null,
       });
+      setImagePreview(null);
     }
   }, [isEdit, setNewProject]);
 
@@ -65,6 +83,7 @@ const ProjectModal = ({
             <Input
               id="link"
               name="link"
+              type="url"
               value={newProject.link}
               onChange={handleInputChange}
               placeholder="Project Link"
@@ -76,8 +95,16 @@ const ProjectModal = ({
               id="image"
               name="image"
               type="file"
+              accept="image/png, image/jpeg"
               onChange={handleImageChange}
             />
+            {imagePreview && (
+              <img
+                src={imagePreview}
+                alt="Image Preview"
+                className="mt-2 w-full h-auto"
+              />
+            )}
           </div>
         </div>
         <div className="flex justify-end gap-2 mt-4">

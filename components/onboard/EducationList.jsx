@@ -42,7 +42,9 @@ const EducationList = ({
         </div>
       ))}
     </div>
-    <Button onClick={() => setShowEducationModal(true)}>Add Education</Button>
+    <Button onClick={() => setShowEducationModal(true)} variant="outline">
+      Add Education
+    </Button>
   </div>
 );
 

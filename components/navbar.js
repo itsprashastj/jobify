@@ -20,7 +20,7 @@ const NavBar = () => {
         },
         {
             label: 'About',
-            path: '/about-us',
+            path: '/about',
             show: true
         },
         {

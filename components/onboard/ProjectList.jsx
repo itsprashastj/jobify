@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash } from "./Icons";
-
 import { Label } from "@/components/ui/label";
+import Link from "next/link";
 
 const ProjectList = ({
   projects,
@@ -18,9 +18,19 @@ const ProjectList = ({
           className="flex justify-between items-center border p-2 rounded"
         >
           <div>
-            <div>{project.title}</div>
-            <div>{project.description}</div>
-            <div>{project.link}</div>
+            <div className="text-2xl font-bold">{project.title}</div>
+            <div className="text-sm">{project.description}</div>
+
+            <Link href={project.link} target="_blank">
+              View Project
+            </Link>
+            {project.image && (
+              <img
+                src={URL.createObjectURL(project.image)}
+                alt="Project Image"
+                className="mt-2 w-96 h-auto"
+              />
+            )}
           </div>
           <div className="flex gap-2">
             <Button
@@ -41,7 +51,9 @@ const ProjectList = ({
         </div>
       ))}
     </div>
-    <Button onClick={() => setShowProjectModal(true)}>Add Project</Button>
+    <Button onClick={() => setShowProjectModal(true)} variant="outline">
+      Add Project
+    </Button>
   </div>
 );
 

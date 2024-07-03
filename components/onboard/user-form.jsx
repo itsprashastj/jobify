@@ -167,7 +167,7 @@ export function UserForm() {
                 rows={3}
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               <EducationList
                 educations={educations}
                 handleEditEducation={handleEditEducation}
@@ -180,7 +180,7 @@ export function UserForm() {
                 handleRemoveSkill={handleRemoveSkill}
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               <LanguageList
                 languages={languages}
                 handleAddLanguage={handleAddLanguage}
@@ -193,7 +193,7 @@ export function UserForm() {
                 setShowProjectModal={setShowProjectModal}
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="social">Social Links</Label>
                 <div className="flex gap-2">
