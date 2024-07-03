@@ -1,10 +1,11 @@
-import MainComponent from "@/components/ob2/MainComponent";
+import { UserForm } from "@/components/onboard/user-form";
 
 
 export default function bye() {
     return (
         <div>
-            <MainComponent />
+            {/* <MainComponent /> */}
+            <UserForm />
         </div>
     )
 };
