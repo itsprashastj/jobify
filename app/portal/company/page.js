@@ -42,7 +42,7 @@ export default function Component() {
                         <TabsTrigger value="why-join-us">Why Join Us</TabsTrigger>
                         <TabsTrigger value="jobs">Jobs</TabsTrigger>
                     </TabsList>
-                    <TabsContent value="overview" className="pt-4">
+                    <TabsContent value="overview" className="pt-4 bg-background rounded-xl p-10">
                         <h2 className="text-xl font-bold">Netflix: The Revolution in Home Entertainment</h2>
                         <p className="mt-2">
                             Netflix is a streaming giant that has fundamentally changed how we consume movies and TV shows. What
@@ -55,7 +55,7 @@ export default function Component() {
                             approach and commitment to customer satisfaction.
                         </p>
                     </TabsContent>
-                    <TabsContent value="why-join-us" className="pt-4">
+                    <TabsContent value="why-join-us" className="pt-4 bg-background rounded-xl p-10">
                         <h2 className="text-xl font-bold">Why Join Us</h2>
                         <p className="mt-2">
                             Joining Netflix means being part of a dynamic and innovative team that is at the forefront of the
@@ -63,7 +63,7 @@ export default function Component() {
                             to make a significant impact.
                         </p>
                     </TabsContent>
-                    <TabsContent value="jobs" className="pt-4">
+                    <TabsContent value="jobs" className="pt-4 p-10">
                         <h2 className="text-xl font-bold">Jobs</h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
                             <Card>
