@@ -1,0 +1,36 @@
+{
+    "tabs": [
+        {
+            "value": "profile",
+            "label": "Profile"
+        },
+        {
+            "value": "jobs",
+            "label": "Applied Jobs"
+        },
+        {
+            "value": "projects",
+            "label": "Projects"
+        },
+        {
+            "value": "skills",
+            "label": "Skills"
+        },
+        {
+            "value": "education",
+            "label": "Education"
+        },
+        {
+            "value": "social",
+            "label": "Social Links"
+        },
+        {
+            "value": "resume",
+            "label": "Resume"
+        },
+        {
+            "value": "certifications",
+            "label": "Certifications"
+        }
+    ]
+}
