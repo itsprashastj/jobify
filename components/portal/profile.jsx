@@ -471,7 +471,9 @@ export default function ViewProfile() {
                       <TableCell>Software Engineer</TableCell>
                       <TableCell>Acme Inc.</TableCell>
                       <TableCell>
-                        <Badge variant="default">Accepted</Badge>
+                        <Badge variant="default" className="bg-green-500">
+                          Accepted
+                        </Badge>
                       </TableCell>
                       <TableCell>2023-04-15</TableCell>
                     </TableRow>
