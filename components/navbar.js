@@ -1,13 +1,14 @@
 "use client";
 
 import { SignedOut, SignedIn, SignInButton, UserButton } from '@clerk/nextjs';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from './ui/button';
 
-const NavBar = () => {
+const NavBar = ({ user }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -25,6 +26,11 @@ const NavBar = () => {
             show: true
         },
         {
+            label: 'Dashboard',
+            path: '/portal/dashboard',
+            show: user
+        },
+        {
             label: 'Contact',
             path: '/contact-us',
             show: true
@@ -34,7 +40,10 @@ const NavBar = () => {
             path: '/auth/sign-in',
             show: true
         },
+
     ]
+
+
 
     return (
         <div>
@@ -65,13 +74,22 @@ const NavBar = () => {
                                                     </SignedIn>
                                                 </Button>
                                             </li>
-                                        ) : (
+                                        ) : menuItem.label === 'Dashboard' ? (
                                             <li key={index}>
+
                                                 <Link href={menuItem.path} className='text-lg'>
                                                     {menuItem.label}
                                                 </Link>
                                             </li>
-                                        )
+
+                                        ) :
+                                            (
+                                                <li key={index}>
+                                                    <Link href={menuItem.path} className='text-lg'>
+                                                        {menuItem.label}
+                                                    </Link>
+                                                </li>
+                                            )
                                     ) : null
                                 )}
                             </ul>
