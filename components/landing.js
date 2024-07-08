@@ -2,6 +2,7 @@
 import Link from "next/link"
 import hero from '@/public/hero.png'
 import Image from 'next/image'
+import { Badge } from "./ui/badge"
 
 export default function Landing() {
     return (
@@ -12,10 +13,10 @@ export default function Landing() {
                     <div className="container grid gap-6 px-4 md:px-6 lg:grid-cols-2 lg:gap-10">
                         <div className="space-y-4">
                             <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-[3.4rem] 2xl:text-[3.75rem]">
-                                Find Your Dream Job with Jobiy
+                                Find Your Dream Job with Jobify
                             </h1>
                             <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                Jobiy is the leading job portal that connects top talent with the best companies. Search, apply, and get
+                                Jobify is the leading job portal that connects top talent with the best companies. Search, apply, and get
                                 hired with ease.
                             </p>
                             <div className="flex flex-col gap-2 min-[400px]:flex-row">
@@ -48,10 +49,12 @@ export default function Landing() {
                     <div className="container space-y-12 px-4 md:px-6">
                         <div className="flex flex-col items-center justify-center space-y-4 text-center">
                             <div className="space-y-2">
-                                <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Key Features</div>
-                                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Discover the Power of Jobiy</h2>
+                                <Badge variant="muted" className="inline-block rounded-lg px-3 py-1 text-lg">Key Features
+
+                                </Badge>
+                                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Discover the Power of Jobify</h2>
                                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                    Jobiy offers a comprehensive suite of features to help you find the perfect job or hire the best
+                                    Jobify offers a comprehensive suite of features to help you find the perfect job or hire the best
                                     talent.
                                 </p>
                             </div>
@@ -116,7 +119,21 @@ export default function Landing() {
                 </section>
             </main>
             <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-                <p className="text-xs text-muted-foreground">&copy; 2024 Jobiy. All rights reserved.</p>
+
+                <div className="flex text-center">
+                    <p className="text-xs text-muted-foreground">&copy; 2024 by&nbsp;</p>
+
+                    <span className="text-xs text-muted-foreground">
+                        <Link href="https://github.com/sahabji0P"
+                            target="_blank" prefetch={false} rel="noreferrer" className="group transition duration-300">
+
+                            Shashwat Jain.&nbsp;
+                            <span className="block h-0.5 max-w-0 bg-black transition-all duration-500 group-hover:max-w-full"></span>
+
+
+                        </Link></span><p className="text-xs text-muted-foreground">All rights reserved.</p>
+                </div>
+
                 <nav className="sm:ml-auto flex gap-4 sm:gap-6">
                     <Link href="#" className="text-xs hover:underline underline-offset-4" prefetch={false}>
                         About
@@ -132,7 +149,7 @@ export default function Landing() {
                     </Link>
                 </nav>
             </footer>
-        </div>
+        </div >
     )
 }
 

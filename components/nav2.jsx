@@ -46,22 +46,19 @@ export default function Nav2({ user }) {
           </Link>
         </nav>
 
-        <div className="flex items-end gap-2">
+        <div className="flex items-end gap-4">
           <Button className="hidden md:block" size="sm">
             Post a Job
           </Button>
 
-          <Button
-            variant="outline"
-            className=" justify-end items-end rounded-xl text-black"
-          >
+          <div className=" justify-end items-end rounded-xl text-black">
             <SignedOut>
               <Link href={"/auth/sign-in"}>Login</Link>
             </SignedOut>
             <SignedIn>
               <UserButton />
             </SignedIn>
-          </Button>
+          </div>
         </div>
 
         <Sheet>
@@ -74,21 +71,21 @@ export default function Nav2({ user }) {
           <SheetContent side="right" className="md:hidden">
             <div className="grid gap-4 p-4">
               <Link
-                href="#"
+                href="/portal/dashboard"
                 className="text-lg font-medium hover:underline"
                 prefetch={false}
               >
                 Dashboard
               </Link>
               <Link
-                href="#"
+                href="/portal/jobs"
                 className="text-lg font-medium hover:underline"
                 prefetch={false}
               >
                 Jobs
               </Link>
               <Link
-                href="#"
+                href="/portal/profile"
                 className="text-lg font-medium hover:underline"
                 prefetch={false}
               >

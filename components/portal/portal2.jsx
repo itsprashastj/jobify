@@ -4,10 +4,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import { currentUser } from "@clerk/nextjs/server";
+import FooterComp from "../footer";
 
 export default async function Component() {
   const user = await currentUser();
-  const userName = user.fullName;
+  const userName = user.username;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -368,6 +369,7 @@ export default async function Component() {
           </Card>
         </section>
       </main>
+      <FooterComp />
     </div>
   );
 }
