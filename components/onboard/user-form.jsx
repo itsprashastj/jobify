@@ -108,7 +108,7 @@ export function UserForm() {
   };
 
   const handleAddSkill = (e) => {
-    if ((e.key === " " || e.key === "Enter") && e.target.value.trim() !== "") {
+    if (e.key === "Enter" && e.target.value.trim() !== "") {
       setSkills([...skills, e.target.value.trim()]);
       e.target.value = "";
     }
