@@ -24,7 +24,7 @@ async function RootLayout({ children }) {
     <ClerkProvider>
       <html lang="en">
         <body className={`${plusJakartaSans.className}`}>
-          <NextTopLoader showSpinner={true} />
+          <NextTopLoader showSpinner={true} color="black" />
           {/* <NavBar user={JSON.parse(JSON.stringify(user))} /> */}
           <Nav2 user={JSON.parse(JSON.stringify(user))} />
 

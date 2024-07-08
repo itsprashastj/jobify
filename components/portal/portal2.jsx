@@ -3,12 +3,17 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
-export default function Component() {
+import { currentUser } from "@clerk/nextjs/server";
+
+export default async function Component() {
+  const user = await currentUser();
+  const userName = user.fullName;
+
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-1 grid gap-8 p-4 md:p-6 lg:p-8">
         <section className="bg-primary py-20 px-4 md:px-6 lg:px-8 rounded-lg flex flex-col items-center justify-center text-center text-primary-foreground">
-          <h1 className="text-4xl font-bold mb-4">Welcome, John Doe!</h1>
+          <h1 className="text-4xl font-bold mb-4">Welcome, {userName}!</h1>
           <p className="text-lg mb-8">
             Discover your dream job and take the next step in your career.
           </p>
