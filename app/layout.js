@@ -3,10 +3,10 @@ import "./globals.css";
 
 import { ClerkProvider } from "@clerk/nextjs";
 import { Suspense } from "react";
-import Loading from "./loading";
-import NavBar from "@/components/navbar";
 import { currentUser } from "@clerk/nextjs/server";
-
+import { Toaster } from "@/components/ui/toaster";
+import NextTopLoader from "nextjs-toploader";
+import Nav2 from "@/components/nav2";
 
 
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"] });
@@ -24,9 +24,16 @@ async function RootLayout({ children }) {
     <ClerkProvider>
       <html lang="en">
         <body className={`${plusJakartaSans.className}`}>
-          <Suspense fallback={<Loading />}>
-            <NavBar user={JSON.parse(JSON.stringify(user))} />
-            {children}</Suspense>
+          <NextTopLoader showSpinner={true} />
+          {/* <NavBar user={JSON.parse(JSON.stringify(user))} /> */}
+          <Nav2 user={JSON.parse(JSON.stringify(user))} />
+
+
+          {children}
+
+          <Toaster />
+
+
         </body>
       </html>
     </ClerkProvider>

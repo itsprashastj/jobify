@@ -87,22 +87,6 @@ export default function ViewProfile() {
   return (
     <div className="flex flex-col w-full justify-center min-h-screen p-4 md:flex-row md:p-10">
       <main className="w-full md:w-3/4">
-        {/* <Tabs
-          defaultValue={activeTab}
-          onValueChange={setActiveTab}
-          className="w-full"
-        >
-          <TabsList className="border-b">
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="certifications">Certifications</TabsTrigger>
-            <TabsTrigger value="jobs">Applied Jobs</TabsTrigger>
-            <TabsTrigger value="projects">Projects</TabsTrigger>
-            <TabsTrigger value="skills">Skills</TabsTrigger>
-            <TabsTrigger value="education">Education</TabsTrigger>
-            <TabsTrigger value="social">Social Links</TabsTrigger>
-            <TabsTrigger value="resume">Resume</TabsTrigger>
-          </TabsList> */}
-
         <Tabs
           defaultValue={activeTab}
           onValueChange={setActiveTab}
@@ -117,7 +101,7 @@ export default function ViewProfile() {
           </TabsList>
 
           <TabsList className="ml-5">
-            <TabsTrigger value="certifications">Test</TabsTrigger>
+            <TabsTrigger value="jobs">Applied Jobs</TabsTrigger>
           </TabsList>
           <TabsContent value="profile">
             <Card className="w-full">

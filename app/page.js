@@ -1,29 +1,25 @@
 
 
-// import Hero from "@/components/hero";
 import { currentUser } from "@clerk/nextjs/server";
-
-import BeforeLogin from "@/components/beforeLogin";
 import { redirect } from "next/navigation";
-import HeroSection from "@/components/hero";
+import HomeLanding from "./home/page";
 
 
 export default async function Home() {
 
+
+
   const user = await currentUser();
   // console.log(user, "user");
 
-  const userProfile = null;
+  const userProfile = true;
 
-  if (user && !userProfile?._id) redirect('/onboard')
+  // if (user && userProfile?._id) redirect('/portal/dashboard')
 
+  // if (user && !userProfile?._id) redirect('/portal/onboard')
 
   return (
-    <div>
+    <HomeLanding user={JSON.parse(JSON.stringify(user))} />
+  )
 
-      {/* <HeroSection /> */}
-
-      <BeforeLogin user={user} />
-    </div>
-  );
 }

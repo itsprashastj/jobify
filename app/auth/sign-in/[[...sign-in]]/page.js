@@ -1,12 +1,15 @@
-import { SignIn } from "@clerk/nextjs"
 
 
-export default function FormSignIn() {
+import { SignIn } from "@clerk/nextjs";
+
+const UserSignIn = () => {
     return (
-        <div className="flex justify-center items-center mb-10">
+
+        <div className="flex items-center justify-center">
+
             <SignIn />
         </div>
-
-    )
-
+    );
 }
+
+export default UserSignIn;

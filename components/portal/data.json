@@ -5,10 +5,6 @@
             "label": "Profile"
         },
         {
-            "value": "jobs",
-            "label": "Applied Jobs"
-        },
-        {
             "value": "projects",
             "label": "Projects"
         },

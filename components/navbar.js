@@ -6,6 +6,10 @@ import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from './ui/button';
 
+import { useToast } from "@/components/ui/use-toast"
+import { ToastAction } from "@/components/ui/toast"
+
+
 const NavBar = ({ user }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -17,12 +21,7 @@ const NavBar = ({ user }) => {
     const menuItems = [
         {
             label: 'Home',
-            path: '/portal/dashboard',
-            show: true
-        },
-        {
-            label: 'About',
-            path: '/about',
+            path: '/',
             show: true
         },
         {
@@ -31,8 +30,8 @@ const NavBar = ({ user }) => {
             show: user
         },
         {
-            label: 'Contact',
-            path: '/contact-us',
+            label: 'Find Jobs',
+            path: '/portal/jobs',
             show: true
         },
         {
@@ -42,6 +41,9 @@ const NavBar = ({ user }) => {
         },
 
     ]
+    const { toast } = useToast()
+
+    const userProfile = null;
 
 
 
@@ -67,20 +69,41 @@ const NavBar = ({ user }) => {
                                             <li key={index}>
                                                 <Button variant="outline" className="px-4 py-2 text-black rounded-full w-fit">
                                                     <SignedOut>
-                                                        <Link href={menuItem.path}>{menuItem.label}</Link>
+                                                        {/* <Link href={menuItem.path}>{menuItem.label}</Link> */}
+                                                        <SignInButton mode='modal' />
                                                     </SignedOut>
                                                     <SignedIn>
-                                                        <UserButton showName />
+                                                        <UserButton showName userProfileMode='modal' />
                                                     </SignedIn>
                                                 </Button>
                                             </li>
                                         ) : menuItem.label === 'Dashboard' ? (
-                                            <li key={index}>
+                                            userProfile ? (
+                                                <li key={index}>
+                                                    <Link href={menuItem.path} className='text-lg'>
+                                                        {menuItem.label}
+                                                    </Link>
 
-                                                <Link href={menuItem.path} className='text-lg'>
-                                                    {menuItem.label}
-                                                </Link>
-                                            </li>
+                                                </li>
+
+                                            ) :
+                                                (
+                                                    <li key={index}>
+
+
+                                                        <p className='text-lg cursor-pointer' onClick={() => {
+                                                            toast({
+                                                                variant: "destructive",
+                                                                title: "Uh oh! Something went wrong.",
+                                                                description: "There was a problem with your request.",
+                                                                action: <ToastAction altText="Try again">Try again</ToastAction>,
+                                                            })
+                                                        }} >
+                                                            {menuItem.label}
+                                                        </p>
+                                                    </li>
+                                                )
+
 
                                         ) :
                                             (
@@ -96,7 +119,7 @@ const NavBar = ({ user }) => {
                         </nav>
                     </div>
                 </header>
-            </div>
+            </div >
 
             <div className="md:hidden mb-16">
                 <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
@@ -148,7 +171,7 @@ const NavBar = ({ user }) => {
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 }
 

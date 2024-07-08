@@ -3,10 +3,10 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SignedOut, SignedIn, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 
-export default function Nav2() {
+export default function Nav2({ user }) {
   return (
     <div>
-      <header className="bg-white text-black shadow-xl z-50 py-4 px-6 sm:px-8 md:px-10 flex items-center justify-between">
+      <header className="bg-white text-black shadow-sm py-4 px-6 sm:px-8 md:px-10 flex items-center justify-between">
         <Link href="/">
           <div className="text-2xl font-bold text-zinc-800">
             jobi&nbsp;
@@ -24,31 +24,45 @@ export default function Nav2() {
             Dashboard
           </Link>
           <Link
-            href="/portal/company"
+            href="/portal/jobs"
             className="text-sm font-medium hover:underline"
             prefetch={false}
           >
             Jobs
           </Link>
           <Link
-            href="#"
+            href="/portal/company"
+            className="text-sm font-medium hover:underline"
+            prefetch={false}
+          >
+            Recuiters
+          </Link>
+          <Link
+            href="/portal/profile"
             className="text-sm font-medium hover:underline"
             prefetch={false}
           >
             Profile
           </Link>
         </nav>
-        <Button
-          variant="outline"
-          className=" justify-end items-end text-black md:inline-flex"
-        >
-          <SignedOut>
-            <Link href={"/auth/sign-in"}>Login</Link>
-          </SignedOut>
-          <SignedIn>
-            <UserButton showName />
-          </SignedIn>
-        </Button>
+
+        <div className="flex items-end gap-2">
+          <Button className="hidden md:block" size="sm">
+            Post a Job
+          </Button>
+
+          <Button
+            variant="outline"
+            className=" justify-end items-end rounded-xl text-black"
+          >
+            <SignedOut>
+              <Link href={"/auth/sign-in"}>Login</Link>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </Button>
+        </div>
 
         <Sheet>
           <SheetTrigger asChild>
@@ -80,13 +94,11 @@ export default function Nav2() {
               >
                 Profile
               </Link>
+              <Button size="sm">Post a Job</Button>
             </div>
           </SheetContent>
         </Sheet>
       </header>
-
-      <br />
-      {children}
     </div>
   );
 }
