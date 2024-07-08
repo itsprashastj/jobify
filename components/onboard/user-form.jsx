@@ -120,7 +120,7 @@ export function UserForm() {
   };
 
   const handleAddLanguage = (e) => {
-    if (e.key === "Tab") {
+    if (e.key === "Enter" && e.target.value.trim() !== "") {
       setLanguages([...languages, e.target.value.trim()]);
       e.target.value = "";
     }
