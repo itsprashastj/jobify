@@ -51,7 +51,16 @@ export default function Nav2({ user }) {
             Post a Job
           </Button>
 
-          <div className=" justify-end items-end rounded-xl text-black">
+          <div className=" justify-end items-end rounded-xl text-black hidden md:block">
+            <SignedOut>
+              <Link href={"/auth/sign-in"}>Login</Link>
+            </SignedOut>
+            <SignedIn>
+              <UserButton showName className="hidden lg:block" />
+            </SignedIn>
+          </div>
+
+          <div className=" justify-end items-end rounded-xl text-black block md:hidden">
             <SignedOut>
               <Link href={"/auth/sign-in"}>Login</Link>
             </SignedOut>

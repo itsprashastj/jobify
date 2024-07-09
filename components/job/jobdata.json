@@ -1,0 +1,32 @@
+{
+    "title": "Senior Frontend Engineer",
+    "contractType": "Full-time",
+    "duration": "1 year Contract",
+    "company": "Acme Inc.",
+    "location": "San Francisco, CA",
+    "salary": "100k - 150k",
+    "postedDate": "Posted 3 days ago",
+    "description": "We are looking for an experienced Frontend Engineer to join our growing team. You will be responsible for building and maintaining our web application, which is built using React, Next.js, and Tailwind CSS.",
+    "responsibilities": [
+        "Develop and maintain the frontend of our web application",
+        "Collaborate with the design team to implement pixel-perfect designs",
+        "Write clean, maintainable, and well-documented code",
+        "Participate in code reviews and provide feedback to other team members",
+        "Stay up-to-date with the latest frontend technologies and best practices"
+    ],
+    "requiredSkills": [
+        "Proficient in React, Next.js, and Tailwind CSS",
+        "Experience with state management libraries like Redux or MobX",
+        "Familiarity with testing frameworks like Jest and Cypress",
+        "Strong problem-solving and analytical skills",
+        "Excellent communication and collaboration skills"
+    ],
+    "benefits": [
+        "Competitive salary and equity compensation",
+        "Comprehensive health, dental, and vision benefits",
+        "Generous paid time off and holidays",
+        "Professional development opportunities and mentorship",
+        "Flexible work arrangements and remote-friendly culture"
+    ],
+    "aboutCompany": "Acme Inc. is a leading technology company that specializes in building innovative web applications. We are committed to creating a diverse and inclusive work environment where everyone can thrive."
+}

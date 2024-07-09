@@ -14,10 +14,13 @@ import { Button } from "@/components/ui/button";
 
 export default function Apply() {
   return (
-    <div className="bg-transparent p-6 rounded-lg">
+    <div className=" border-2 border-dotted border-primary p-6 rounded-lg">
       <h2 className="text-2xl font-bold">Apply Now</h2>
-      <p className="mt-2 text-muted-foreground">
+      <p className="mt-2">
         Click the button below to apply for this position.
+      </p>
+      <p className=" text-muted-foreground">
+        Note: The salary for this position will depend on the experience of the candidate.
       </p>
       <div className="mt-4">
         <Dialog>
@@ -98,6 +101,6 @@ export default function Apply() {
           </DialogContent>
         </Dialog>
       </div>
-    </div>
+    </div >
   );
 }
