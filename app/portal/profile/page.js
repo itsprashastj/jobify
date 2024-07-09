@@ -1,6 +1,6 @@
 
 
-import ViewProfile from "@/components/portal/profile";
+import ViewProfile from "@/components/profile/profile";
 
 export default function Profile() {
     return (
