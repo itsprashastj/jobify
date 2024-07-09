@@ -3,23 +3,25 @@ import Link from "next/link"
 import hero from '@/public/hero.png'
 import Image from 'next/image'
 import { Badge } from "./ui/badge"
+import FooterComp from "./footer"
 
 export default function Landing() {
     return (
         <div className="flex flex-col min-h-[100dvh]">
 
-            <main className="flex-1">
-                <section className="w-full py-12 md:py-24 lg:py-16">
-                    <div className="container grid gap-6 px-4 md:px-6 lg:grid-cols-2 lg:gap-10">
-                        <div className="space-y-4">
+            <main className="flex-1 ">
+                <section className="w-full py-12 md:py-24 lg:py-16 ">
+                    <Image src={hero} alt="Hero" className=" -z-10 grayscale blur-sm opacity-90" fill />
+                    <div className="container flex text-center justify-center px-4 md:px-6 ">
+                        <div className="space-y-4 ">
                             <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-[3.4rem] 2xl:text-[3.75rem]">
                                 Find Your Dream Job with Jobify
                             </h1>
-                            <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                            <p className="max-w-[800px] text-primary md:text-xl lg:text-base xl:text-xl">
                                 Jobify is the leading job portal that connects top talent with the best companies. Search, apply, and get
                                 hired with ease.
                             </p>
-                            <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                            <div className="flex flex-col gap-2 justify-center min-[400px]:flex-row">
                                 <Link
                                     href="/portal/jobs"
                                     className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
@@ -36,13 +38,7 @@ export default function Landing() {
                                 </Link>
                             </div>
                         </div>
-                        <Image
-                            src={hero}
-                            width="600"
-                            height="500"
-                            alt="Hero"
-                            className="mx-auto aspect-[3/2] overflow-hidden rounded-xl object-cover object-center sm:w-full"
-                        />
+
                     </div>
                 </section>
                 <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
@@ -118,40 +114,13 @@ export default function Landing() {
                     </div>
                 </section>
             </main>
-            <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
+            <FooterComp />
 
-                <div className="flex text-center">
-                    <p className="text-xs text-muted-foreground">&copy; 2024 by&nbsp;</p>
-
-                    <span className="text-xs text-muted-foreground">
-                        <Link href="https://github.com/sahabji0P"
-                            target="_blank" prefetch={false} rel="noreferrer" className="group transition duration-300">
-
-                            Shashwat Jain.&nbsp;
-                            <span className="block h-0.5 max-w-0 bg-black transition-all duration-500 group-hover:max-w-full"></span>
-
-
-                        </Link></span><p className="text-xs text-muted-foreground">All rights reserved.</p>
-                </div>
-
-                <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-                    <Link href="#" className="text-xs hover:underline underline-offset-4" prefetch={false}>
-                        About
-                    </Link>
-                    <Link href="#" className="text-xs hover:underline underline-offset-4" prefetch={false}>
-                        Contact
-                    </Link>
-                    <Link href="#" className="text-xs hover:underline underline-offset-4" prefetch={false}>
-                        Privacy Policy
-                    </Link>
-                    <Link href="#" className="text-xs hover:underline underline-offset-4" prefetch={false}>
-                        Terms of Service
-                    </Link>
-                </nav>
-            </footer>
         </div >
     )
 }
+
+
 
 function BriefcaseIcon(props) {
     return (

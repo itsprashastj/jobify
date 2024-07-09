@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Apply() {
   return (
-    <div className=" border-2 border-dotted border-primary p-6 rounded-lg">
+    <div className=" border-2 border-dotted border-primary p-6 rounded-lg duration-300 hover:scale-105">
       <h2 className="text-2xl font-bold">Apply Now</h2>
       <p className="mt-2">
         Click the button below to apply for this position.

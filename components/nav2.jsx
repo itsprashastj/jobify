@@ -47,13 +47,15 @@ export default function Nav2({ user }) {
         </nav>
 
         <div className="flex items-end gap-4">
-          <Button className="hidden md:block" size="sm">
+          <Button variant="outline" className="hidden md:block" size="sm">
             Post a Job
           </Button>
 
           <div className=" justify-end items-end rounded-xl text-black hidden md:block">
             <SignedOut>
-              <Link href={"/auth/sign-in"}>Login</Link>
+              <Link href={"/auth/sign-in"}>
+                <Button size="sm">Login</Button>
+              </Link>
             </SignedOut>
             <SignedIn>
               <UserButton showName className="hidden lg:block" />
@@ -62,7 +64,9 @@ export default function Nav2({ user }) {
 
           <div className=" justify-end items-end rounded-xl text-black block md:hidden">
             <SignedOut>
-              <Link href={"/auth/sign-in"}>Login</Link>
+              <Link href={"/auth/sign-in"}>
+                <Button size="sm">Login</Button>
+              </Link>
             </SignedOut>
             <SignedIn>
               <UserButton />
