@@ -25,7 +25,8 @@ export function UserForm({ user }) {
 
   const handleFieldChange = (setter) => (e) => {
     setter(e.target.value);
-    setIsAnyFieldFilled(true);
+    if (e.target.value.trim() === "") setIsAnyFieldFilled(false);
+    else setIsAnyFieldFilled(true);
   };
 
   // Recruiter form state
