@@ -10,7 +10,8 @@ export default async function bye() {
 
     return (
         <div className="mt-4">
-            <UserForm user={JSON.parse(JSON.stringify(user))} />
+            {/* <UserForm user={JSON.parse(JSON.stringify(user))} /> */}
+            <UserForm />
         </div>
     )
 };

@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useUser } from "@clerk/nextjs";
+import { supabase } from "@/lib/supabase";
 import {
   Card,
   CardHeader,
@@ -17,8 +19,9 @@ import EducationList from "./EducationList";
 import ProjectList from "./ProjectList";
 import SkillList from "./SkillList";
 import LanguageList from "./LanguageList";
+import { redirect } from "next/navigation";
 
-export function UserForm({ user }) {
+export function UserForm() {
   const [activeTab, setActiveTab] = useState("candidate");
 
   const [isAnyFieldFilled, setIsAnyFieldFilled] = useState(false);
@@ -168,58 +171,107 @@ export function UserForm({ user }) {
     setIsAnyFieldFilled(true);
   };
 
-  const currentUserId = user?.id;
+  const { user } = useUser();
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+
+    let resumeUrl = "";
+
+    if (activeTab === "candidate" && resume) {
+      const fileExt = resume.name.split(".").pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const { data, error } = await supabase.storage
+        .from("resumes")
+        .upload(fileName, resume);
+
+      if (error) {
+        console.error("Error uploading file:", error);
+        setIsLoading(false);
+        return;
+      }
+
+      const {
+        data: { publicUrl },
+        error: urlError,
+      } = supabase.storage.from("resumes").getPublicUrl(fileName);
+
+      if (urlError) {
+        console.error("Error getting public URL:", urlError);
+        setIsLoading(false);
+        return;
+      }
+
+      resumeUrl = publicUrl;
+    }
+
+    const formData = {
+      id: user.id, // Use Clerk user ID as the primary key
+      role: activeTab,
+      name: activeTab === "recruiter" ? recruiterName : candidateName,
+      email: user.emailAddresses[0].emailAddress,
+    };
 
     if (activeTab === "recruiter") {
-      console.log({
-        currentUserId,
-        companyName,
-        recruiterName,
-        recruiterSocial,
-        companyWebsite,
-      });
-
-      // Reset form fields
-      setCompanyName("");
-      setRecruiterName("");
-      setRecruiterSocial("");
-      setCompanyWebsite("");
-      setIsAnyFieldFilled(false);
+      formData.companyname = companyName; // Adjusted to lowercase
+      formData.companywebsite = companyWebsite; // Adjusted to lowercase
+      formData.sociallinks = { linkedin: recruiterSocial }; // Adjusted to lowercase
     } else if (activeTab === "candidate") {
-      console.log({
-        currentUserId,
-        candidateName,
-        about,
-        educations,
-        skills,
-        languages,
-        projects,
-        socialLinks: {
-          linkedIn,
-          github,
-          portfolio,
-        },
-        certifications,
-        resume,
-      });
+      formData.about = about;
+      formData.educations = educations;
+      formData.skills = skills;
+      formData.languages = languages;
+      formData.projects = projects;
+      formData.sociallinks = {
+        // Adjusted to lowercase
+        LinkedIn: linkedIn,
+        GitHub: github,
+        Portfolio: portfolio,
+      };
+      formData.certifications = certifications
+        .split(",")
+        .map((cert) => cert.trim());
+      formData.resumeurl = resumeUrl; // Adjusted to lowercase
+    }
+    try {
+      const { data, error } = await supabase
+        .from("users")
+        .upsert(formData, { onConflict: "id" });
 
-      // Reset form fields
-      setCandidateName("");
-      setAbout("");
-      setEducations([]);
-      setSkills([]);
-      setLanguages([]);
-      setProjects([]);
-      setLinkedInLink("");
-      setGithubLink("");
-      setPortfolioLink("");
-      setCertifications("");
-      setResume(null);
-      setIsAnyFieldFilled(false);
+      if (error) throw error;
+
+      console.log("User registered successfully:", data);
+      alert("User registered successfully!");
+
+      if (activeTab === "recruiter") {
+        setCompanyWebsite(""); // Assuming this is the state variable for company website
+        setRecruiterSocial(""); // Assuming this is the state variable for recruiter social
+        setCompanyName(""); // Assuming this is the state variable for company name
+        setRecruiterName(""); // Assuming this is the state variable for recruiter name
+        redirect("/recruiter"); // Redirect to dashboard
+      } else {
+        setAbout(""); // Assuming this is the state variable for about
+        setEducations([]); // Assuming this is the state variable for educations
+        setSkills([]); // Assuming this is the state variable for skills
+        setLanguages([]); // Assuming this is the state variable for languages
+        setProjects([]); // Assuming this is the state variable for projects
+        setLinkedIn(""); // Assuming this is the state variable for LinkedIn
+        setGithub(""); // Assuming this is the state variable for GitHub
+        setPortfolio(""); // Assuming this is the state variable for portfolio
+        setCertifications(""); // Assuming this is the state variable for certifications
+        // setResumeUrl(null); // Assuming this is the state variable for resume URL
+        setCandidateName(""); // Assuming this is the state variable for candidate name
+        redirect("/portal/dashboard"); // Redirect to dashboard
+      }
+
+      // Reset form fields or show success message
+    } catch (error) {
+      console.error("Error registering user:", error);
+      // Show error message to user
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -334,7 +386,7 @@ export function UserForm({ user }) {
                 />
               </div>
             </div>
-            <div className="grid gap-2">
+            {/* <div className="grid gap-2">
               <Label htmlFor="resume">Resume</Label>
               <Input
                 id="resume"
@@ -343,7 +395,7 @@ export function UserForm({ user }) {
                 onChange={handleResumeChange}
                 disabled={isAnyFieldFilled && activeTab !== "candidate"}
               />
-            </div>
+            </div> */}
           </div>
         )}
         {activeTab === "recruiter" && (
@@ -355,6 +407,7 @@ export function UserForm({ user }) {
                 placeholder="Enter your company name"
                 value={companyName}
                 onChange={handleFieldChange(setCompanyName)}
+                required
                 disabled={isAnyFieldFilled && activeTab !== "recruiter"}
               />
             </div>
@@ -393,8 +446,8 @@ export function UserForm({ user }) {
         )}
       </CardContent>
       <CardFooter className="flex justify-end">
-        <Button type="submit" onClick={handleSubmit}>
-          Submit
+        <Button type="submit" onClick={handleSubmit} disabled={isLoading}>
+          {isLoading ? "Submitting..." : "Submit"}
         </Button>
       </CardFooter>
       {showEducationModal && (

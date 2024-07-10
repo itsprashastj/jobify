@@ -17,7 +17,7 @@ export default function HomeLanding({ user }) {
         return () => clearTimeout(timer);
     }, []);
 
-    console.log(user, "user");
+
 
     return (
         <div>
