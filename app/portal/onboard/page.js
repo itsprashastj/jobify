@@ -1,11 +1,16 @@
 import { UserForm } from "@/components/onboard/user-form";
+import Component from "@/components/users";
+
+import { currentUser } from "@clerk/nextjs/server";
 
 
-export default function bye() {
+export default async function bye() {
+
+    const user = await currentUser();
+
     return (
         <div className="mt-4">
-            {/* <MainComponent /> */}
-            <UserForm />
+            <UserForm user={JSON.parse(JSON.stringify(user))} />
         </div>
     )
 };
