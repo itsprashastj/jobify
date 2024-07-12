@@ -6,8 +6,8 @@ import JobHome from "@/components/job/jobHome";
 export default function Job() {
     return (
         <div>
-            {/* <JobHome /> */}
-            <JobDescriptionPage />
+            <JobHome />
+            {/* <JobDescriptionPage /> */}
         </div>
     )
 }

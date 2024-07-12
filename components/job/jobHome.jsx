@@ -13,6 +13,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 export default function Component() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -33,6 +34,7 @@ export default function Component() {
       description:
         "We are looking for an experienced software engineer to join our team and help build our next-generation platform.",
       applications: 25,
+      slug: "jobs/Software-Engineer-Acme-Inc",
     },
     {
       id: 2,
@@ -44,6 +46,7 @@ export default function Component() {
       description:
         "Seeking a talented marketing coordinator to help plan and execute our upcoming marketing campaigns.",
       applications: 12,
+      slug: "jobs/Marketing-Coordinator-Globex-Corporation",
     },
     {
       id: 3,
@@ -55,6 +58,7 @@ export default function Component() {
       description:
         "We need a skilled graphic designer to create visually stunning designs for our brand and marketing materials.",
       applications: 8,
+      slug: "jobs/Graphic-Designer-Stark-Industries",
     },
     {
       id: 4,
@@ -66,6 +70,7 @@ export default function Component() {
       description:
         "Join our data analytics team and help us uncover valuable insights from our growing data sets.",
       applications: 18,
+      slug: "jobs/Data-Analyst-Wayne-Enterprises",
     },
     {
       id: 5,
@@ -77,6 +82,7 @@ export default function Component() {
       description:
         "We are looking for a talented web developer to help us build and maintain our company website.",
       applications: 9,
+      slug: "jobs/Web-Developer-Stark-Industries",
     },
     {
       id: 6,
@@ -88,6 +94,7 @@ export default function Component() {
       description:
         "Seeking an experienced project manager to lead the delivery of our upcoming software projects.",
       applications: 14,
+      slug: "jobs/Project-Manager-Globex-Corporation",
     },
   ];
   const filteredJobs = useMemo(() => {
@@ -301,7 +308,9 @@ export default function Component() {
                 <p className="mt-2 text-muted-foreground">{job.description}</p>
               </CardContent>
               <CardFooter className="flex items-center justify-between">
-                <Button variant="outline">View Details</Button>
+                <Link href={job.slug} target="_blank">
+                  <Button variant="outline">View Details</Button>
+                </Link>
                 <Badge variant="muted" className="ml-2">
                   {job.applications}+ Already Applied
                 </Badge>

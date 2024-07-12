@@ -6,7 +6,7 @@ import { Suspense } from "react";
 import { currentUser } from "@clerk/nextjs/server";
 import { Toaster } from "@/components/ui/toaster";
 import NextTopLoader from "nextjs-toploader";
-import Nav2 from "@/components/nav2";
+import Nav2 from "@/components/NavBar/nav2";
 
 
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"] });
