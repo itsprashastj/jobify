@@ -4,6 +4,7 @@ import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
+import { Slide, Fade } from 'react-awesome-reveal';
 
 export default function NotFound() {
     const currentRoute = usePathname();
@@ -12,12 +13,24 @@ export default function NotFound() {
         <div
             className={`flex h-[85vh] flex-col items-center justify-center text-center`}
         >
-            <h1 className={"mb-4 text-4xl font-extrabold text-zinc-500 md:text-5xl"}>
-                Uh oh!
-            </h1>
-            <p className={"mb-4 text-lg font-light text-foreground/70 md:text-xl"}>
-                Sorry, the page you are looking for {currentRoute} does not exist.
-            </p>
+            <Slide
+                triggerOnce={true}
+            >
+                <h1 className={"mb-4 text-6xl font-extrabold text-zinc-500 md:text-5xl duration-300 hover:scale-150"}>
+                    Oh oh!
+                </h1>
+            </Slide>
+
+            <Fade
+                triggerOnce={true}
+                delay={750}
+            >
+                <p className={"mb-4 text-lg font-normal text-foreground/70 md:text-xl duration-[10000] animate-pulse"}>
+                    Sorry, the page you are looking for
+                    <span className='font-bold'> {currentRoute}</span> does not exist.
+                </p>
+            </Fade>
+
             <Link href={"/"}>
                 <Button>Go back home</Button>
             </Link>
