@@ -2,8 +2,9 @@
 import * as React from "react";
 import { Progress } from "@/components/ui/progress";
 import Landing from "@/components/landing";
+import { supabase } from "@/lib/supabase";
 
-export default function HomeLanding({ user }) {
+export default function Lol({ user }) {
     const [progress, setProgress] = React.useState(13);
     const [visible, setVisible] = React.useState(true);
     const [hide, setHide] = React.useState(false);
@@ -16,6 +17,36 @@ export default function HomeLanding({ user }) {
         }, 500);
         return () => clearTimeout(timer);
     }, []);
+
+    const userID = user?.id;
+
+    React.useEffect(() => {
+
+        const checkUserOnboarded = async () => {
+            if (user) {
+                const { data, error } = await supabase
+                    .from("users")
+                    .select("role")
+                    .eq("id", userID)
+                    .single();
+
+                if (error) {
+                    console.error(error);
+                    return;
+                }
+                else if (data) {
+                    alert(data.role);
+                }
+
+
+            } else {
+                alert("No user found");
+            }
+        };
+
+        checkUserOnboarded();
+
+    }, [user]);
 
 
 

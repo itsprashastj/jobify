@@ -2,7 +2,8 @@
 
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import HomeLanding from "./home/page";
+// import HomeLanding from "@/components/landing";
+import HomeLanding from './home/page'
 
 
 export default async function Home() {
