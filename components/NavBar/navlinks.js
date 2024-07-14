@@ -1,7 +1,7 @@
 
 
 
-const NavLinksCandidate = [
+export const NavLinksCandidate = [
     {
         title: 'Dashboard',
         href: '/portal/dashboard',
@@ -24,7 +24,9 @@ const NavLinksCandidate = [
     },
 ]
 
-const NavLinksRecruiter = [
+
+
+export const NavLinksRecruiter = [
     {
         title: 'Dashboard',
         href: '/recruiter/dashboard',

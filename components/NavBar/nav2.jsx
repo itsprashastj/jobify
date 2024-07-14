@@ -3,6 +3,8 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SignedOut, SignedIn, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 
+import { NavLinksCandidate, NavLinksRecruiter } from "./navlinks";
+
 export default function Nav2({ user }) {
   return (
     <div>
@@ -15,7 +17,7 @@ export default function Nav2({ user }) {
             </span>
           </div>
         </Link>
-        <nav className="hidden md:flex items-center gap-6">
+        {/* <nav className="hidden md:flex items-center gap-6">
           <Link
             href="/portal/dashboard"
             className="text-sm font-medium hover:underline"
@@ -44,6 +46,19 @@ export default function Nav2({ user }) {
           >
             Profile
           </Link>
+        </nav> */}
+
+        <nav className="hidden md:flex items-center gap-6">
+          {NavLinksCandidate.map((link) => (
+            <Link
+              key={link.title}
+              href={link.href}
+              className="text-sm font-medium hover:underline"
+              prefetch={false}
+            >
+              {link.title}
+            </Link>
+          ))}
         </nav>
 
         <div className="flex items-end gap-4">
@@ -81,29 +96,18 @@ export default function Nav2({ user }) {
               <span className="sr-only">Toggle navigation</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="md:hidden">
+          <SheetContent side="bottom" className="md:hidden">
             <div className="grid gap-4 p-4">
-              <Link
-                href="/portal/dashboard"
-                className="text-lg font-medium hover:underline"
-                prefetch={false}
-              >
-                Dashboard
-              </Link>
-              <Link
-                href="/portal/jobs"
-                className="text-lg font-medium hover:underline"
-                prefetch={false}
-              >
-                Jobs
-              </Link>
-              <Link
-                href="/portal/profile"
-                className="text-lg font-medium hover:underline"
-                prefetch={false}
-              >
-                Profile
-              </Link>
+              {NavLinksCandidate.map((link) => (
+                <Link
+                  key={link.title}
+                  href={link.href}
+                  className="text-lg font-medium hover:underline"
+                  prefetch={false}
+                >
+                  {link.title}
+                </Link>
+              ))}
               <Button size="sm">Post a Job</Button>
             </div>
           </SheetContent>
