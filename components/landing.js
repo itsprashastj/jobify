@@ -11,7 +11,7 @@ export default function Landing() {
 
             <main className="flex-1 ">
                 <section className="w-full py-12 md:py-24 lg:py-16 ">
-                    <Image src={hero} alt="Hero" className=" -z-10 grayscale blur-sm opacity-90" fill />
+                    <Image src={hero} alt="Hero" className="-z-10 grayscale blur-sm opacity-90" fill />
                     <div className="container flex text-center justify-center px-4 md:px-6 ">
                         <div className="space-y-4 ">
                             <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-[3.4rem] 2xl:text-[3.75rem]">

@@ -48,3 +48,27 @@ export const NavLinksRecruiter = [
     },
 
 ]
+
+
+export const NavLinksCommon = [
+    {
+        title: 'Home',
+        href: '/',
+
+    },
+    {
+        title: 'About',
+        href: '/about',
+
+    },
+    {
+        title: 'Career',
+        href: '/career',
+
+    },
+    {
+        title: 'FAQ',
+        href: '/faq',
+
+    },
+]
