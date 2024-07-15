@@ -2,8 +2,8 @@
 import Link from "next/link"
 import hero from '@/public/hero.png'
 import Image from 'next/image'
-import { Badge } from "./ui/badge"
-import FooterComp from "./footer"
+import { Badge } from "../ui/badge"
+import FooterComp from "../footer"
 
 export default function Landing() {
     return (

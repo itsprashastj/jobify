@@ -1,8 +1,9 @@
 "use client";
 import * as React from "react";
 import { Progress } from "@/components/ui/progress";
-import Landing from "@/components/landing";
+import Landing from "./landing";
 import { supabase } from "@/lib/supabase";
+import { redirect } from "next/navigation";
 
 export default function Lol({ user }) {
     const [progress, setProgress] = React.useState(13);
@@ -26,7 +27,7 @@ export default function Lol({ user }) {
             if (user) {
                 const { data, error } = await supabase
                     .from("users")
-                    .select("role")
+                    .select("isOnboarded")
                     .eq("id", userID)
                     .single();
 
@@ -35,12 +36,16 @@ export default function Lol({ user }) {
                     return;
                 }
                 else if (data) {
-                    alert(data.role);
+                    if (data.isOnboarded) {
+                        console.log("User is onboarded");
+                        redirect("/portal/dashboard");
+                    } else {
+                        console.log("User is not onboarded");
+                        redirect("/portal/onboarding");
+                    }
                 }
 
 
-            } else {
-                alert("No user found");
             }
         };
 

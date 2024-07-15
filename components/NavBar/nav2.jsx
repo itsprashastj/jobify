@@ -6,6 +6,8 @@ import Link from "next/link";
 import { NavLinksCandidate, NavLinksRecruiter } from "./navlinks";
 
 export default function Nav2({ user }) {
+  const userID = user?.id;
+
   return (
     <div>
       <header className="bg-white text-black shadow-sm py-4 px-6 sm:px-8 md:px-10 flex items-center justify-between">
