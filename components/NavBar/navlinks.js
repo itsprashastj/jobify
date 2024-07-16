@@ -39,7 +39,7 @@ export const NavLinksRecruiter = [
     },
     {
         title: 'Post Job',
-        href: '/recruiter/post-job',
+        href: '/recruiter/postjob',
     },
     {
         title: 'Profile',

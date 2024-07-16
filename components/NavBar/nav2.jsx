@@ -1,12 +1,61 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SignedOut, SignedIn, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 
-import { NavLinksCandidate, NavLinksRecruiter } from "./navlinks";
+import {
+  NavLinksCandidate,
+  NavLinksRecruiter,
+  NavLinksCommon,
+} from "./navlinks";
+import { supabase } from "@/lib/supabase";
+import { useState, useEffect } from "react";
 
 export default function Nav2({ user }) {
   const userID = user?.id;
+
+  const [userRole, setUserRole] = useState("");
+
+  useEffect(() => {
+    // check user role
+    const checkUserRole = async () => {
+      if (user) {
+        const { data, error } = await supabase
+          .from("users")
+          .select("role")
+          .eq("id", userID)
+          .single();
+
+        if (error) {
+          console.error(error);
+          return;
+        }
+        if (data) {
+          if (data.role === "candidate") {
+            setUserRole("candidate");
+          }
+          if (data.role === "recruiter") {
+            setUserRole("recruiter");
+          }
+        }
+      }
+    };
+
+    checkUserRole();
+  }, [user, userID]);
+
+  console.log(userRole);
+
+  let navlinks;
+  if (userRole === "candidate") {
+    navlinks = NavLinksCandidate;
+  } else if (userRole === "recruiter") {
+    navlinks = NavLinksRecruiter;
+  } else {
+    navlinks = NavLinksCommon;
+  }
 
   return (
     <div>
@@ -51,7 +100,7 @@ export default function Nav2({ user }) {
         </nav> */}
 
         <nav className="hidden md:flex items-center gap-6">
-          {NavLinksCandidate.map((link) => (
+          {navlinks.map((link) => (
             <Link
               key={link.title}
               href={link.href}
@@ -100,7 +149,7 @@ export default function Nav2({ user }) {
           </SheetTrigger>
           <SheetContent side="bottom" className="md:hidden">
             <div className="grid gap-4 p-4">
-              {NavLinksCandidate.map((link) => (
+              {navlinks.map((link) => (
                 <Link
                   key={link.title}
                   href={link.href}
