@@ -25,7 +25,7 @@ export default function NotFound() {
                 triggerOnce={true}
                 delay={750}
             >
-                <p className={"mb-4 text-lg font-normal text-foreground/70 md:text-xl duration-[10000] animate-pulse"}>
+                <p className={"mb-4 text-lg font-normal text-foreground/70 md:text-xl duration-&lsqb;10000&rsqb animate-pulse"}>
                     Sorry, the page you are looking for
                     <span className='font-bold'> {currentRoute}</span> does not exist.
                 </p>

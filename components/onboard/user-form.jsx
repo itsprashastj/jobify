@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
 import {
@@ -19,7 +19,7 @@ import EducationList from "./EducationList";
 import ProjectList from "./ProjectList";
 import SkillList from "./SkillList";
 import LanguageList from "./LanguageList";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 export function UserForm() {
   const [activeTab, setActiveTab] = useState("candidate");
@@ -173,6 +173,32 @@ export function UserForm() {
 
   const { user } = useUser();
   const [isLoading, setIsLoading] = useState(false);
+  const Router = useRouter();
+
+  useEffect(() => {
+    const checkUserOnboarded = async () => {
+      if (user) {
+        const { data, error } = await supabase
+
+          .from("users")
+          .select("isOnboarded, role")
+          .eq("id", user.id)
+          .single();
+
+        if (error) {
+          console.error(error);
+          return;
+        } else if (data) {
+          if (data.isOnboarded) {
+            console.log("User is onboarded");
+            Router.push("/");
+          }
+        }
+      }
+    };
+
+    checkUserOnboarded();
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -212,6 +238,7 @@ export function UserForm() {
       role: activeTab,
       name: activeTab === "recruiter" ? recruiterName : candidateName,
       email: user.emailAddresses[0].emailAddress,
+      isOnboarded: true,
     };
 
     if (activeTab === "recruiter") {
@@ -250,7 +277,7 @@ export function UserForm() {
         setRecruiterSocial(""); // Assuming this is the state variable for recruiter social
         setCompanyName(""); // Assuming this is the state variable for company name
         setRecruiterName(""); // Assuming this is the state variable for recruiter name
-        redirect("/recruiter"); // Redirect to dashboard
+        Router.push("/"); // Redirect to dashboard
       } else {
         setAbout(""); // Assuming this is the state variable for about
         setEducations([]); // Assuming this is the state variable for educations
@@ -263,7 +290,7 @@ export function UserForm() {
         setCertifications(""); // Assuming this is the state variable for certifications
         // setResumeUrl(null); // Assuming this is the state variable for resume URL
         setCandidateName(""); // Assuming this is the state variable for candidate name
-        redirect("/portal/dashboard"); // Redirect to dashboard
+        Router.push("/"); // Redirect to dashboard
       }
 
       // Reset form fields or show success message

@@ -117,7 +117,7 @@ export default async function Component() {
           <Card>
             <CardContent className="grid gap-2 items-center">
               <Avatar className="w-12 h-12">
-                <AvatarImage src="/placeholder-user.jpg" />
+                <AvatarImage src="/logo.png" />
                 <AvatarFallback>JD</AvatarFallback>
               </Avatar>
               <div className="text-lg font-semibold">John Doe</div>
@@ -130,7 +130,7 @@ export default async function Component() {
           <Card>
             <CardContent className="grid gap-2 items-center">
               <Avatar className="w-12 h-12">
-                <AvatarImage src="/placeholder-user.jpg" />
+                <AvatarImage src="/logo.png" />
                 <AvatarFallback>JA</AvatarFallback>
               </Avatar>
               <div className="text-lg font-semibold">Jane Appleseed</div>
@@ -143,7 +143,7 @@ export default async function Component() {
           <Card>
             <CardContent className="grid gap-2 items-center">
               <Avatar className="w-12 h-12">
-                <AvatarImage src="/placeholder-user.jpg" />
+                <AvatarImage src="/logo.png" />
                 <AvatarFallback>SM</AvatarFallback>
               </Avatar>
               <div className="text-lg font-semibold">Sarah Musk</div>

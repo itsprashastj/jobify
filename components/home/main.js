@@ -3,7 +3,7 @@ import * as React from "react";
 import { Progress } from "@/components/ui/progress";
 import Landing from "./landing";
 import { supabase } from "@/lib/supabase";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 export default function Lol({ user }) {
     const [progress, setProgress] = React.useState(13);
@@ -20,38 +20,44 @@ export default function Lol({ user }) {
     }, []);
 
     const userID = user?.id;
+    const router = useRouter();
 
     React.useEffect(() => {
-
         const checkUserOnboarded = async () => {
             if (user) {
                 const { data, error } = await supabase
                     .from("users")
-                    .select("isOnboarded")
+                    .select("isOnboarded, role")
                     .eq("id", userID)
                     .single();
 
                 if (error) {
                     console.error(error);
                     return;
-                }
-                else if (data) {
+                } else if (data) {
                     if (data.isOnboarded) {
                         console.log("User is onboarded");
-                        redirect("/portal/dashboard");
+                        if (data.role === "candidate") {
+                            router.push("/portal/dashboard");
+                        }
+                        if (data.role === "recruiter") {
+                            router.push("/recruiter/dashboard");
+                        }
+
                     } else {
                         console.log("User is not onboarded");
-                        redirect("/portal/onboarding");
+                        router.push("/portal/onboard");
                     }
                 }
-
-
+            } else {
+                console.log("User is not logged in");
             }
         };
 
         checkUserOnboarded();
 
     }, [user]);
+
 
 
 
