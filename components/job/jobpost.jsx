@@ -14,16 +14,21 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { useUser } from "@clerk/nextjs";
+import { supabase } from "@/lib/supabase";
 
 export default function PostJobComponent() {
+  const { user } = useUser();
+  const userID = user.id;
+
   const [formData, setFormData] = useState({
+    id: userID,
     jobTitle: "",
     contractType: "",
     duration: "",
     company: "",
     location: "",
     salary: "",
-    postedDate: "",
     jobDescription: "",
     responsibilities: "",
     requiredSkills: "",
@@ -36,6 +41,23 @@ export default function PostJobComponent() {
 
   const handleContactTypeChange = (value) => {
     setFormData({ ...formData, contractType: value });
+  };
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const { data, error } = await supabase.from("jobPosts").insert(formData);
+
+      if (error) throw error;
+    } catch (error) {
+      console.error("An error occurred while posting the job", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -117,7 +139,7 @@ export default function PostJobComponent() {
                   placeholder="Enter salary range"
                 />
               </div>
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <Label htmlFor="postedDate">Posted Date</Label>
                 <Input
                   id="postedDate"
@@ -126,7 +148,7 @@ export default function PostJobComponent() {
                   onChange={handleInputChange}
                   type="date"
                 />
-              </div>
+              </div> */}
             </div>
             <div className="space-y-2 mt-4">
               <Label htmlFor="jobDescription">Job Description</Label>
@@ -184,7 +206,9 @@ export default function PostJobComponent() {
               />
             </div>
             <div className="flex justify-end mt-6">
-              <Button type="submit">Post Job</Button>
+              <Button type="submit" onClick={handleSubmit}>
+                Post Job
+              </Button>
             </div>
           </form>
         </div>
@@ -209,10 +233,10 @@ export default function PostJobComponent() {
               <h4 className="font-bold">Salary</h4>
               <p>{formData.salary}</p>
             </div>
-            <div>
+            {/* <div>
               <h4 className="font-bold">Posted Date</h4>
               <p>{formData.postedDate}</p>
-            </div>
+            </div> */}
             <div>
               <h4 className="font-bold">Job Description</h4>
               <p>{formData.jobDescription}</p>
