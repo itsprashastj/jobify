@@ -1,9 +1,10 @@
+import PostJobComponent from "@/components/job/jobpost";
 
 
 export default function PostJob() {
     return (
         <div>
-            Post Job
+            <PostJobComponent />
         </div>
     )
 }
