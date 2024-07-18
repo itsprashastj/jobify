@@ -3,26 +3,16 @@
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
+import { v4 as uuidv4 } from "uuid";
 
-export default function PostJobComponent() {
-  const { user } = useUser();
-  const userID = user.id;
+export default function PostJobComponent({ user }) {
+  const userID = user?.id;
+  let postID;
 
   const [formData, setFormData] = useState({
-    id: userID,
     jobTitle: "",
     contractType: "",
     duration: "",
@@ -38,10 +28,9 @@ export default function PostJobComponent() {
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+  const uuid = uuidv4();
 
-  const handleContactTypeChange = (value) => {
-    setFormData({ ...formData, contractType: value });
-  };
+  postID = `${uuid}-${formData.jobTitle}-${formData.company}`;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -50,9 +39,12 @@ export default function PostJobComponent() {
     setIsLoading(true);
 
     try {
-      const { data, error } = await supabase.from("jobPosts").insert(formData);
+      const { data, error } = await supabase
+        .from("jobPosts")
+        .insert([{ ...formData, id: postID, userid: userID }]);
 
       if (error) throw error;
+      console.log("Job posted successfully", data);
     } catch (error) {
       console.error("An error occurred while posting the job", error);
     } finally {
@@ -75,29 +67,25 @@ export default function PostJobComponent() {
                   value={formData.jobTitle}
                   onChange={handleInputChange}
                   placeholder="Enter job title"
+                  required
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="contractType">Contract Type</Label>
-                <Select
+                <Input
                   id="contractType"
                   name="contractType"
                   value={formData.contractType}
-                  onValueChange={handleContactTypeChange}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select contract type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Contract Type</SelectLabel>
-                      <SelectItem value="fulltime">Full-time</SelectItem>
-                      <SelectItem value="parttime">Part-time</SelectItem>
-                      <SelectItem value="contract">Contract</SelectItem>
-                      <SelectItem value="internship">Internship</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+                  onChange={handleInputChange}
+                  placeholder="Enter contract type"
+                  list="contractTypeOptions"
+                />
+                <datalist id="contractTypeOptions">
+                  <option value="Full-time" />
+                  <option value="Part-time" />
+                  <option value="Contract" />
+                  <option value="Internship" />
+                </datalist>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="duration">Duration</Label>

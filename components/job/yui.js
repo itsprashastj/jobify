@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -15,34 +14,29 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
 
 const FormSchema = z.object({
-    email: z
-        .string({
-            required_error: "Please select an email to display.",
-        })
-        .email(),
+    username: z.string().min(2, {
+        message: "Username must be at least 2 characters.",
+    }),
 })
 
-export function SelectForm() {
-    const form = useForm < z.infer < typeof FormSchema >> ({
+export function InputForm() {
+    const form = useForm({
         resolver: zodResolver(FormSchema),
+        defaultValues: {
+            username: "",
+        },
     })
 
-    function onSubmit(data: z.infer<typeof FormSchema>) {
+    function onSubmit(data) {
         toast({
             title: "You submitted the following values:",
             description: (
                 <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                    <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+                    <p className="text-white">{JSON.stringify(data, null, 2)}</p>
                 </pre>
             ),
         })
@@ -53,25 +47,15 @@ export function SelectForm() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
                 <FormField
                     control={form.control}
-                    name="email"
+                    name="username"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select a verified email to display" />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    <SelectItem value="m@example.com">m@example.com</SelectItem>
-                                    <SelectItem value="m@google.com">m@google.com</SelectItem>
-                                    <SelectItem value="m@support.com">m@support.com</SelectItem>
-                                </SelectContent>
-                            </Select>
+                            <FormLabel>Username</FormLabel>
+                            <FormControl>
+                                <Input placeholder="shadcn" {...field} />
+                            </FormControl>
                             <FormDescription>
-                                You can manage email addresses in your{" "}
-                                <Link href="/examples/forms">email settings</Link>.
+                                This is your public display name.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>

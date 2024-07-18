@@ -44,9 +44,7 @@ export default function Nav2({ user }) {
     };
 
     checkUserRole();
-  }, [user, userID]);
-
-  console.log(userRole);
+  }, [userID]);
 
   let navlinks;
   if (userRole === "candidate") {
