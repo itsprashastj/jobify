@@ -1,5 +1,5 @@
 import PostJobComponent from "@/components/job/jobpost";
-import { InputForm } from "@/components/job/yui";
+import InputForm from "@/components/job/yui";
 import { currentUser } from "@clerk/nextjs/server";
 
 

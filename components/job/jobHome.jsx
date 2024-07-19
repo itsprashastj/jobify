@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { toast } from "@/components/ui/use-toast";
+import { supabase } from "@/lib/supabase";
 
 export default function Component() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,6 +25,7 @@ export default function Component() {
     company: [],
   });
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
   const jobs = [
     {
       id: 1,

@@ -1,54 +1,91 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { useState } from "react";
+
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
 import { v4 as uuidv4 } from "uuid";
+import { toast } from "@/components/ui/use-toast";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+const FormSchema = z.object({
+  jobTitle: z.string().min(1, { message: "Job title is required." }),
+  contractType: z.string().min(1, { message: "Contract type is required." }),
+  duration: z.string().min(1, { message: "Duration is required." }),
+  company: z.string().min(1, { message: "Company name is required." }),
+  location: z.string().min(1, { message: "Location is required." }),
+  salary: z.string().min(1, { message: "Salary is required." }),
+  jobDescription: z
+    .string()
+    .min(1, { message: "Job description is required." }),
+  responsibilities: z
+    .string()
+    .min(1, { message: "Responsibilities are required." }),
+  requiredSkills: z
+    .string()
+    .min(1, { message: "Required skills are required." }),
+  benefits: z.string().min(1, { message: "Benefits are required." }),
+  aboutCompany: z
+    .string()
+    .min(1, { message: "About the company is required." }),
+});
 
 export default function PostJobComponent({ user }) {
   const userID = user?.id;
-  let postID;
 
-  const [formData, setFormData] = useState({
-    jobTitle: "",
-    contractType: "",
-    duration: "",
-    company: "",
-    location: "",
-    salary: "",
-    jobDescription: "",
-    responsibilities: "",
-    requiredSkills: "",
-    benefits: "",
-    aboutCompany: "",
+  const form = useForm({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      jobTitle: "",
+      contractType: "",
+      duration: "",
+      company: "",
+      location: "",
+      salary: "",
+      jobDescription: "",
+      responsibilities: "",
+      requiredSkills: "",
+      benefits: "",
+      aboutCompany: "",
+    },
   });
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-  const uuid = uuidv4();
 
-  postID = `${uuid}-${formData.jobTitle}-${formData.company}`;
-
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-
+  const handleSubmit = async (data) => {
+    const uuid = uuidv4();
+    const postID = `${uuid}-${form.jobTitle}-${form.company}`;
     try {
-      const { data, error } = await supabase
+      const { data: supabaseData, error } = await supabase
         .from("jobPosts")
-        .insert([{ ...formData, id: postID, userid: userID }]);
+        .insert([{ ...data, id: postID, userid: userID }]);
 
-      if (error) throw error;
-      console.log("Job posted successfully", data);
+      if (error)
+        throw toast({
+          title: "An error occurred while posting the job",
+          description: error.message,
+        });
+      toast({
+        title: "Job posted successfully",
+        description: "URL: /jobs/" + postID,
+      });
     } catch (error) {
-      console.error("An error occurred while posting the job", error);
-    } finally {
-      setIsLoading(false);
+      toast({
+        title: "An error occurred while posting the job",
+        description: error.message,
+      });
     }
   };
 
@@ -57,205 +94,113 @@ export default function PostJobComponent({ user }) {
       <h1 className="text-3xl font-bold mb-8">Post a New Job</h1>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div>
-          <form>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="jobTitle">Job Title</Label>
-                <Input
-                  id="jobTitle"
-                  name="jobTitle"
-                  value={formData.jobTitle}
-                  onChange={handleInputChange}
-                  placeholder="Enter job title"
-                  required
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className="space-y-6"
+            >
+              {Object.keys(form.getValues()).map((key) => (
+                <FormField
+                  key={key}
+                  control={form.control}
+                  name={key}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{key.replace(/([A-Z])/g, " $1")}</FormLabel>
+                      <FormControl>
+                        {key === "jobDescription" ||
+                        key === "responsibilities" ||
+                        key === "requiredSkills" ||
+                        key === "benefits" ||
+                        key === "aboutCompany" ? (
+                          <Textarea
+                            {...field}
+                            placeholder={`Enter ${key
+                              .replace(/([A-Z])/g, " $1")
+                              .toLowerCase()}`}
+                            rows={4}
+                          />
+                        ) : (
+                          <Input
+                            {...field}
+                            placeholder={`Enter ${key
+                              .replace(/([A-Z])/g, " $1")
+                              .toLowerCase()}`}
+                          />
+                        )}
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
+              ))}
+              <div className="flex justify-end mt-6">
+                <Button type="submit">Post Job</Button>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="contractType">Contract Type</Label>
-                <Input
-                  id="contractType"
-                  name="contractType"
-                  value={formData.contractType}
-                  onChange={handleInputChange}
-                  placeholder="Enter contract type"
-                  list="contractTypeOptions"
-                />
-                <datalist id="contractTypeOptions">
-                  <option value="Full-time" />
-                  <option value="Part-time" />
-                  <option value="Contract" />
-                  <option value="Internship" />
-                </datalist>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="duration">Duration</Label>
-                <Input
-                  id="duration"
-                  name="duration"
-                  value={formData.duration}
-                  onChange={handleInputChange}
-                  placeholder="Enter duration"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="company">Company</Label>
-                <Input
-                  id="company"
-                  name="company"
-                  value={formData.company}
-                  onChange={handleInputChange}
-                  placeholder="Enter company name"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="location">Location</Label>
-                <Input
-                  id="location"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleInputChange}
-                  placeholder="Enter location"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="salary">Salary</Label>
-                <Input
-                  id="salary"
-                  name="salary"
-                  value={formData.salary}
-                  onChange={handleInputChange}
-                  placeholder="Enter salary range"
-                />
-              </div>
-              {/* <div className="space-y-2">
-                <Label htmlFor="postedDate">Posted Date</Label>
-                <Input
-                  id="postedDate"
-                  name="postedDate"
-                  value={formData.postedDate}
-                  onChange={handleInputChange}
-                  type="date"
-                />
-              </div> */}
-            </div>
-            <div className="space-y-2 mt-4">
-              <Label htmlFor="jobDescription">Job Description</Label>
-              <Textarea
-                id="jobDescription"
-                name="jobDescription"
-                value={formData.jobDescription}
-                onChange={handleInputChange}
-                rows={4}
-                placeholder="Enter job description"
-              />
-            </div>
-            <div className="space-y-2 mt-4">
-              <Label htmlFor="responsibilities">Responsibilities</Label>
-              <Textarea
-                id="responsibilities"
-                name="responsibilities"
-                value={formData.responsibilities}
-                onChange={handleInputChange}
-                rows={4}
-                placeholder="Enter job responsibilities (bullet points)"
-              />
-            </div>
-            <div className="space-y-2 mt-4">
-              <Label htmlFor="requiredSkills">Required Skills</Label>
-              <Textarea
-                id="requiredSkills"
-                name="requiredSkills"
-                value={formData.requiredSkills}
-                onChange={handleInputChange}
-                rows={4}
-                placeholder="Enter required skills (bullet points)"
-              />
-            </div>
-            <div className="space-y-2 mt-4">
-              <Label htmlFor="benefits">Benefits</Label>
-              <Textarea
-                id="benefits"
-                name="benefits"
-                value={formData.benefits}
-                onChange={handleInputChange}
-                rows={4}
-                placeholder="Enter job benefits (bullet points)"
-              />
-            </div>
-            <div className="space-y-2 mt-4">
-              <Label htmlFor="aboutCompany">About the Company</Label>
-              <Textarea
-                id="aboutCompany"
-                name="aboutCompany"
-                value={formData.aboutCompany}
-                onChange={handleInputChange}
-                rows={4}
-                placeholder="Enter information about the company"
-              />
-            </div>
-            <div className="flex justify-end mt-6">
-              <Button type="submit" onClick={handleSubmit}>
-                Post Job
-              </Button>
-            </div>
-          </form>
+            </form>
+          </Form>
         </div>
         <div className="bg-muted p-6 rounded-lg">
           <h2 className="text-2xl font-bold mb-4">Job Posting Preview</h2>
           <div className="space-y-4">
             <div>
-              <h3 className="text-xl font-bold">{formData.jobTitle}</h3>
+              <h3 className="text-xl font-bold">{form.watch("jobTitle")}</h3>
               <p className="text-muted-foreground">
-                {formData.contractType} | {formData.duration}
+                {form.watch("contractType")} | {form.watch("duration")}
               </p>
             </div>
             <div>
               <h4 className="font-bold">Company</h4>
-              <p>{formData.company}</p>
+              <p>{form.watch("company")}</p>
             </div>
             <div>
               <h4 className="font-bold">Location</h4>
-              <p>{formData.location}</p>
+              <p>{form.watch("location")}</p>
             </div>
             <div>
               <h4 className="font-bold">Salary</h4>
-              <p>{formData.salary}</p>
+              <p>{form.watch("salary")}</p>
             </div>
-            {/* <div>
-              <h4 className="font-bold">Posted Date</h4>
-              <p>{formData.postedDate}</p>
-            </div> */}
             <div>
               <h4 className="font-bold">Job Description</h4>
-              <p>{formData.jobDescription}</p>
+              <p>{form.watch("jobDescription")}</p>
             </div>
             <div>
               <h4 className="font-bold">Responsibilities</h4>
               <ul className="list-disc pl-6">
-                {formData.responsibilities.split("\n").map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))}
+                {form
+                  .watch("responsibilities")
+                  .split("\n")
+                  .map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
               </ul>
             </div>
             <div>
               <h4 className="font-bold">Required Skills</h4>
               <ul className="list-disc pl-6">
-                {formData.requiredSkills.split("\n").map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))}
+                {form
+                  .watch("requiredSkills")
+                  .split("\n")
+                  .map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
               </ul>
             </div>
             <div>
               <h4 className="font-bold">Benefits</h4>
               <ul className="list-disc pl-6">
-                {formData.benefits.split("\n").map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))}
+                {form
+                  .watch("benefits")
+                  .split("\n")
+                  .map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
               </ul>
             </div>
             <div>
               <h4 className="font-bold">About the Company</h4>
-              <p>{formData.aboutCompany}</p>
+              <p>{form.watch("aboutCompany")}</p>
             </div>
           </div>
         </div>
