@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+// Import your Supabase client
+import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -14,8 +16,6 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { toast } from "@/components/ui/use-toast";
-import { supabase } from "@/lib/supabase";
 
 export default function Component() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -25,92 +25,38 @@ export default function Component() {
     company: [],
   });
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [jobs, setJobs] = useState([]);
 
-  const jobs = [
-    {
-      id: 1,
-      title: "Software Engineer",
-      company: "Acme Inc.",
-      salary: "₹100,000",
-      type: "Full-time",
-      duration: "3 months",
-      description:
-        "We are looking for an experienced software engineer to join our team and help build our next-generation platform.",
-      applications: 25,
-      slug: "jobs/Software-Engineer-Acme-Inc",
-    },
-    {
-      id: 2,
-      title: "Marketing Coordinator",
-      company: "Globex Corporation",
-      salary: "₹60,000",
-      type: "Part-time",
-      duration: "6 months",
-      description:
-        "Seeking a talented marketing coordinator to help plan and execute our upcoming marketing campaigns.",
-      applications: 12,
-      slug: "jobs/Marketing-Coordinator-Globex-Corporation",
-    },
-    {
-      id: 3,
-      title: "Graphic Designer",
-      company: "Stark Industries",
-      salary: "₹80,000",
-      type: "Contract",
-      duration: "1 year",
-      description:
-        "We need a skilled graphic designer to create visually stunning designs for our brand and marketing materials.",
-      applications: 8,
-      slug: "jobs/Graphic-Designer-Stark-Industries",
-    },
-    {
-      id: 4,
-      title: "Data Analyst",
-      company: "Wayne Enterprises",
-      salary: "₹90,000",
-      type: "Full-time",
-      duration: "2 years",
-      description:
-        "Join our data analytics team and help us uncover valuable insights from our growing data sets.",
-      applications: 18,
-      slug: "jobs/Data-Analyst-Wayne-Enterprises",
-    },
-    {
-      id: 5,
-      title: "Web Developer",
-      company: "Stark Industries",
-      salary: "₹70,000",
-      type: "Part-time",
-      duration: "6 months",
-      description:
-        "We are looking for a talented web developer to help us build and maintain our company website.",
-      applications: 9,
-      slug: "jobs/Web-Developer-Stark-Industries",
-    },
-    {
-      id: 6,
-      title: "Project Manager",
-      company: "Globex Corporation",
-      salary: "₹100,000",
-      type: "Contract",
-      duration: "1 year",
-      description:
-        "Seeking an experienced project manager to lead the delivery of our upcoming software projects.",
-      applications: 14,
-      slug: "jobs/Project-Manager-Globex-Corporation",
-    },
-  ];
+  useEffect(() => {
+    const fetchJobs = async () => {
+      const { data, error } = await supabase
+        .from("jobPosts")
+        .select(
+          "id, jobTitle, company, salary, contractType, duration, jobDescription"
+        );
+
+      if (error) {
+        console.error("Error fetching jobs:", error);
+      } else {
+        setJobs(data);
+      }
+    };
+
+    fetchJobs();
+  }, []);
+
   const filteredJobs = useMemo(() => {
     return jobs.filter((job) => {
       const { jobType, duration, company } = filters;
       const jobTitleMatch = job.title
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
+        ? job.title.toLowerCase().includes(searchTerm.toLowerCase())
+        : false;
       const companyMatch = job.company
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
-      const salaryMatch =
-        parseFloat(job.salary.replace(/[₹,$]/g, "")) >= parseFloat(searchTerm);
+        ? job.company.toLowerCase().includes(searchTerm.toLowerCase())
+        : false;
+      const salaryMatch = job.salary
+        ? parseFloat(job.salary.replace(/[₹,$]/g, "")) >= parseFloat(searchTerm)
+        : false;
       const jobTypeMatch = jobType.length === 0 || jobType.includes(job.type);
       const durationMatch =
         duration.length === 0 || duration.includes(job.duration);
@@ -123,10 +69,12 @@ export default function Component() {
         companyFilterMatch
       );
     });
-  }, [searchTerm, filters]);
+  }, [searchTerm, filters, jobs]);
+
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
+
   const handleFilterChange = (type, value) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -135,9 +83,11 @@ export default function Component() {
         : [...prevFilters[type], value],
     }));
   };
+
   const handleFilterToggle = () => {
     setIsFilterOpen((prevState) => !prevState);
   };
+
   return (
     <div className="flex flex-col md:flex-row">
       <div
@@ -293,25 +243,27 @@ export default function Component() {
           {filteredJobs.map((job) => (
             <Card key={job.id}>
               <CardHeader>
-                <CardTitle>{job.title}</CardTitle>
+                <CardTitle>{job.jobTitle}</CardTitle>
                 <div className="flex items-center justify-between">
                   <div className="text-muted-foreground">{job.company}</div>
                 </div>
-                <div className="font-bold">{job.salary}</div>
+                <div className="font-bold">${job.salary}</div>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-2">
                   <div className="bg-muted px-2 py-1 rounded-md text-xs font-medium">
-                    {job.type}
+                    {job.contractType}
                   </div>
                   <div className="bg-muted px-2 py-1 rounded-md text-xs font-medium">
                     {job.duration}
                   </div>
                 </div>
-                <p className="mt-2 text-muted-foreground">{job.description}</p>
+                <p className="mt-2 text-muted-foreground">
+                  {job.jobDescription}
+                </p>
               </CardContent>
               <CardFooter className="flex items-center justify-between">
-                <Link href={job.slug} target="_blank">
+                <Link href={`jobs/${job.id}`} target="_blank">
                   <Button variant="outline">View Details</Button>
                 </Link>
                 <Badge variant="muted" className="ml-2">
