@@ -44,10 +44,10 @@ export default function Lol({ user }) {
                             router.push("/recruiter/dashboard");
                         }
 
-                    } else {
-                        console.log("User is not onboarded");
-                        router.push("/portal/onboard");
                     }
+                } else {
+                    console.log("User is not onboarded");
+                    router.push("/portal/onboard");
                 }
             } else {
                 console.log("User is not logged in");
