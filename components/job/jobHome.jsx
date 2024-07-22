@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { IndianRupee } from "lucide-react";
 
 export default function Component() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -247,7 +248,10 @@ export default function Component() {
                 <div className="flex items-center justify-between">
                   <div className="text-muted-foreground">{job.company}</div>
                 </div>
-                <div className="font-bold">${job.salary}</div>
+                <div className="font-bold flex">
+                  <IndianRupee size={18} className="mt-1" />
+                  {job.salary}
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-2">
@@ -267,7 +271,7 @@ export default function Component() {
                   <Button variant="outline">View Details</Button>
                 </Link>
                 <Badge variant="muted" className="ml-2">
-                  {job.applications}+ Already Applied
+                  {job.applications}+26 Already Applied
                 </Badge>
               </CardFooter>
             </Card>
