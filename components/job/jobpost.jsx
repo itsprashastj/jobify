@@ -120,6 +120,20 @@ export default function PostJobComponent({ user }) {
                               .toLowerCase()}`}
                             rows={4}
                           />
+                        ) : key === "contractType" ? (
+                          <>
+                            <Input
+                              {...field}
+                              placeholder="Enter contract type"
+                              list="contractTypeOptions"
+                            />
+                            <datalist id="contractTypeOptions">
+                              <option value="Full-time" />
+                              <option value="Part-time" />
+                              <option value="Contract" />
+                              <option value="Internship" />
+                            </datalist>
+                          </>
                         ) : (
                           <Input
                             {...field}
