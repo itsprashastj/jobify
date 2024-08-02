@@ -109,10 +109,10 @@ export default function PostJobComponent({ user }) {
                       <FormLabel>{key.replace(/([A-Z])/g, " $1")}</FormLabel>
                       <FormControl>
                         {key === "jobDescription" ||
-                        key === "responsibilities" ||
-                        key === "requiredSkills" ||
-                        key === "benefits" ||
-                        key === "aboutCompany" ? (
+                          key === "responsibilities" ||
+                          key === "requiredSkills" ||
+                          key === "benefits" ||
+                          key === "aboutCompany" ? (
                           <Textarea
                             {...field}
                             placeholder={`Enter ${key
